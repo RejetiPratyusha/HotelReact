@@ -1,0 +1,47 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
+#login-page {
+    /* Reset margins and paddings for HTML and body within this component */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  }
+  footer{
+    display:block;
+    clear:both; /*or main{overflow:hidden}*/
+    background-color: hsl(175, 32%, 15%);
+    text-align: center;
+    padding:25px;
+    height:10%;
+}
+.card {
+  width: 300px !important;
+  margin: 20px;
+  padding: 15px;
+  border: 1px solid #7614a7;
+  box-shadow: 0 4px 6px rgba(122, 26, 182, 0.1);
+  transition: transform 0.2s ease-in-out;
+  border-radius: 20px;
+}
+.form-label{
+  color: black;
+}
+
+.custom-margin {
+  margin-bottom: 20px; /* Adjust the value to control the amount of spacing */
+}
