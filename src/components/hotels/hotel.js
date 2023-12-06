@@ -1,125 +1,91 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 import "./hotel.css";
-import { Button, Card, CardBody, CardSubtitle, CardTitle, Nav, NavLink, Navbar } from "react-bootstrap";
+import { Card, Tab, Tabs } from "react-bootstrap";
 import NavbarComponent from "../navbar/navbar";
-import Search from "../search/search";
-import Room from "../rooms/room";
+import { HotelDetails } from "./hotel-details";
+import { RoomDetails } from "./room-details";
+import { Reviews } from "./reviews";
+import SearchHotels from "../search/SearchHotels";
 
 function Hotel() {
-    const [hotels, setHotels] = useState([]);
-    const [param] = useSearchParams();
-    const [qStr,setQStr] = useState('');
-    const navigate = useNavigate();
+  const [hotels, setHotels] = useState([]);
+  const { location } = useParams();
 
-    console.log(hotels)
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8083/hotel/getAllByLocationName/${location}`)
+      .then((response) => setHotels(response.data));
+  }, [location]);
 
-    useEffect(() => {
-        axios.get('http://localhost:8083/hotel/getAllByLocationName/' + param.get('location'))
-            .then(response => setHotels(response.data))
-    }, [])
+  const cardStyle = {
+    width: "300px",
+    height: "400px",
+  };
 
+  const cardBodyStyle = {
+    height: "90%",
+  };
 
-    const searchProducts = (str)=>{
-        console.log('seach func in parent comp called.....' + str)
-        setQStr(str)
-    }
-    return (
+  const reviewStyle = {
+    height: "100%",
+    overflow: "auto",
+  };
 
-        <div >
-            <div className="mb-4" >
-
-                <NavbarComponent />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                
-                        <div > <Search /></div>
-
-
-                        <div className="col-md-9">
-                            <div className="row">
-                                {hotels.map((h, index) => (
-                                    <div key={index} className="col-md-4 mb-4">
-                                        {/* <Card
-                                    style={{
-                                        width: "18rem",
-                                        height: "12rem",
-                                    }}
-                                >
-                                    
-                                    <img src="/h1.jpg" ></img>
-                                    <CardBody>
-                                        <CardTitle tag="h5">{h.name}</CardTitle>
-                                        <CardSubtitle className="mb-2 text-muted" tag="h6">
-                                            {h.address}
-                                        </CardSubtitle>
-
-                                        <Button variant="primary" onClick={() => navigate("/rooms/room?hotelId=" + h.id)}>view rooms</Button>
-                                    </CardBody>
-                                </Card> */}
-                                        {/* <div class="card text-center">
-                                            <div class="card-header">
-                                                <ul class="nav nav-tabs card-header-tabs">
-
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active" aria-current="true" href="#">{h.name}</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link " href='/rooms/room?hotelId=${h.id}'>Room</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link " href="review">review</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-body">
-                                                <h5 class="card-title">{h.name}</h5>
-                                                <p class="card-text">{h.address}</p>
-                                                <a href="#" class="btn btn-primary">Go somewhere</a>
-                                            </div>
-                                        </div> */}
-                                         <Card>
-      <Card.Header>
-        <Nav variant="tabs" defaultActiveKey="#first">
-          <Nav.Item>
-            <Nav.Link href="#first">Hotel</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="#room">Room</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="#disabled">Reviews</Nav.Link>
-          </Nav.Item>
-        </Nav>
-      </Card.Header>
-      <Card.Body>
-{hotels.map(({name, address, email}) => (
-<>
-<Card.Title>{name}t</Card.Title>
-<Card.Text>
-          {address}
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
-</>
-))}
-        {/* <Card.Title>Special title treatment</Card.Title>
-        <Card.Text>
-          With supporting text below as a natural lead-in to additional content.
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button> */}
-      </Card.Body>
-      
-    </Card>
-   
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-           
-    )
+  return (
+    <div
+      style={{
+        backgroundImage: "url(/h5.jpg)",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+      }}
+    >
+      <div>
+        <NavbarComponent />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div>
+          <SearchHotels />
+        </div>
+        <div
+          className="d-flex  
+                        justify-content-center vh-100"
+        >
+          <div className="row">
+            {hotels.map(({ name, address, id, email, phone_number }, index) => (
+              <div key={index} className="col-md-4 mb-4">
+                <Card style={cardStyle}>
+                  <Tabs defaultActiveKey="hotels" id="tabs">
+                    <Tab eventKey="hotels" title="Hotels">
+                      <div className="card-body">
+                        <HotelDetails
+                          name={name}
+                          address={address}
+                          email={email}
+                          phone_number={phone_number}
+                        />
+                      </div>
+                    </Tab>
+                    <Tab eventKey="room" title="Rooms">
+                      <div className="card-body">
+                        <RoomDetails hotelId={id} location={location} />
+                      </div>
+                    </Tab>
+                    <Tab eventKey="reviews" title="Reviews">
+                      <div className="card-body" style={reviewStyle}>
+                        <Reviews idForHotel={id} />
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
-
 
 export default Hotel;

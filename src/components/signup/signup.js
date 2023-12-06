@@ -9,36 +9,68 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [customer,setCustomer]=useState({});
+  const [customer, setCustomer] = useState({});
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  const  doSignUp = () => {
-    let customerObj={
-        "name":name,
-        "phone":phone,
-        "email":email,
-        "user":{
-        "username":username,
-        "password":password
-        }
+  const doSignUp = () => {
+    // password validation
+    const passwordPattern =
+      /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/;
+    if (!passwordPattern.test(password)) {
+      alert(
+        "Password requirements: 8-12 characters, 1 number, 1 letter, 1 symbol."
+      );
+      return;
     }
+
+    // Name validation
+    if (name.length === 0) {
+      alert("Name can not be empty");
+      return;
+    }
+
+    // email validation
+    if (email.length === 0) {
+      alert("Please enter your email address.");
+      return;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    //phoneNumber validation
+    if (phone.length < 10) {
+      alert("Please enter a valid phone number");
+      return;
+    }
+
+    let customerObj = {
+      name: name,
+      phone: phone,
+      email: email,
+      user: {
+        username: username,
+        password: password,
+      },
+    };
     //console.log(JSON.stringify(customerObj))
-    axios.post('http://localhost:8083/feelhome/customer/add',customerObj)
-    .then(response=>{
-        setCustomer(response.data)
-        navigate('/login/login?msg="signup success')
-    })
-    .catch(function (error){
-        console.log(error)
-        setMsg("Issue in processing sign up")
-    });
-  }
+    axios
+      .post("http://localhost:8083/feelhome/customer/add", customerObj)
+      .then((response) => {
+        setCustomer(response.data);
+        navigate('/login?msg="signup success');
+      })
+      .catch(function (error) {
+        console.log(error);
+        setMsg("Issue in processing sign up");
+      });
+  };
   return (
     <div>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand>FEEL HOME</Navbar.Brand> 
+          <Navbar.Brand>FEEL HOME</Navbar.Brand>
         </Container>
       </Navbar>
 
@@ -71,10 +103,6 @@ function Signup() {
                     />
                   </div>
 
-
-                  
-
-
                   <div className="col-md-6">
                     <label>Enter Email:</label>
                   </div>
@@ -85,8 +113,6 @@ function Signup() {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
-
-
 
                   {/* Read Contact */}
                   <div className="col-md-6">
@@ -100,17 +126,16 @@ function Signup() {
                     />
                   </div>
 
-                
                   <hr />
                   <div className="col-md-6">
                     <label>Enter Username:</label>
                   </div>
                   <div className="col-md-6 mb-4">
                     <input
-                      type="email"
+                      type="text"
                       className="form-control"
-                       minLength= "5"
-                       maxlength="12"
+                      minLength="5"
+                      maxlength="12"
                       onChange={(e) => setUsername(e.target.value)}
                     />
                   </div>
@@ -123,6 +148,9 @@ function Signup() {
                     <input
                       type="password"
                       className="form-control"
+                      required
+                      minlength="8"
+                      maxlength="12"
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
@@ -136,11 +164,10 @@ function Signup() {
             </div>
             <div style={{ textAlign: "left" }} className="mt-4">
               <span>
-                Have an Account?
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Have an Account? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button
                   className="btn btn-primary"
-                  onClick={() => navigate("/login/login")}
+                  onClick={() => navigate("/login")}
                 >
                   Login
                 </button>

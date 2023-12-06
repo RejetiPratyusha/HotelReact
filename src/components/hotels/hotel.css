@@ -7,3 +7,17 @@
     padding: 20px;
       
   }
+
+  .my-component {
+    background-image: "url(h4.jpg)";
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 500px;
+  }
+
+  .containerStyle {
+    display: 'flex';
+    alignItems: 'center';
+    justifyContent: 'center';
+    height: '100vh';
+    }

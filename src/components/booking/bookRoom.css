@@ -1,0 +1,21 @@
+.app-container {
+    display: flex;
+    flex-direction: row;
+    
+  }
+  
+  .left-column,
+  .right-column {
+    flex: 1;
+    flex-grow: 1;
+    padding: 20px;
+    border: 1px solid #de0d0d;
+  }
+  
+  .left-column {
+    background-color: #f0f0f0;
+  }
+  
+  .right-column {
+    background-color: #ffffff;
+  }

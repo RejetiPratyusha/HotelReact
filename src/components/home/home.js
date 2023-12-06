@@ -1,41 +1,33 @@
-
 import NavbarComponent from "../navbar/navbar";
-import Header from "../navbar/navbarnew";
-import Search from "../search/search";
+import SearchHotels from "../search/SearchHotels";
 
-
-const Home=()=>{
-
-  const divStyle = {backgroundImage:"url(Home.jpg)",
-    backgroundRepeat:'no-repeat',
-    backgroundPosition:'center',
+const Home = () => {
+  const divStyle = {
+    backgroundImage: "url(/Home.jpg)",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
     width: "100vw",
     height: "100vh",
-    backgroundSize:'cover',
-    };
+    backgroundSize: "cover",
+  };
 
-    const containerStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        };
+  const containerStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+  };
 
-        
-
-    return (
-      <div className="mb-4" style = {divStyle}>
-          <NavbarComponent  /> 
-      <div className="container" style = {containerStyle}>
-      
-      <div>
-     {/* <Header /> */}
-      <Search />
+  return (
+    <div className="mb-4" style={divStyle}>
+      <NavbarComponent />
+      <div className="container" style={containerStyle}>
+        <div>
+          {/* <Header /> */}
+          <SearchHotels />
+        </div>
+      </div>
     </div>
-    </div>
-    </div>
-    
-       
-      );
-}
+  );
+};
 export default Home;

@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { message } from "antd";
 import { Container, Navbar } from "react-bootstrap";
-
-
 
 export default function Login() {
   const [param] = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [msg, setMsg] = useState(param.get('msg'));
-  const [username, setUsername] = useState('');
-
-
+  const [msg, setMsg] = useState(param.get("msg"));
+  const [username, setUsername] = useState("");
 
   const auth = localStorage.getItem("user");
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  console.log(location);
 
   const handleUsernameChange = (value) => {
     setUsername(value);
@@ -37,23 +37,15 @@ export default function Login() {
     }));
   };
 
-  ;
-
-  const handleLogin = async (email, password) => { 
-    // Validate the email and password fields
-    const validationErrors = {};
-
-
+  const handleLogin = async (email, password) => {
     try {
       let token = window.btoa(username + ":" + password);
-      axios.get(
-        "http://localhost:8083/user/login",
-        {
+      axios
+        .get("http://localhost:8083/user/login", {
           headers: {
             Authorization: "Basic " + token,
           },
-        }
-      )
+        })
         .then(function (response) {
           //handle success
           localStorage.setItem("username", username);
@@ -64,7 +56,15 @@ export default function Login() {
 
           switch (role) {
             case "CUSTOMER":
-              navigate('/customer/customerDashboard')
+              const state = location.state;
+              if (state?.from) {
+                // Redirects back to the previous unauthenticated routes
+                navigate(state?.from);
+              } else {
+                navigate(-1);
+              }
+
+              // const roomId = localStorage.getItem("roomId");
               break;
             case "Admin":
               navigate("/Admin/AdminDashboard");
@@ -72,7 +72,7 @@ export default function Login() {
             case "EXECUTIVE":
               navigate("/Executive/executiveDashboard");
               break;
-              case "Hr":
+            case "Hr":
               navigate("/Hr/HrDashboard");
               break;
             default:
@@ -84,37 +84,32 @@ export default function Login() {
         });
 
       message.success("login successfully");
-
-
-    }
-    catch (error) {
+    } catch (error) {
       message.error("email/password wrong");
-    };
-  }
+    }
+  };
 
   const styles = {
     background: {
-        backgroundImage: 'h4.jpg',
-        backgroundSize: 'cover',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-};
+      backgroundImage: "h4.jpg",
+      backgroundSize: "cover",
+      height: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  };
 
   return (
-    
-    <div >
+    <div>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand>FEEL HOME</Navbar.Brand> 
+          <Navbar.Brand>FEEL HOME</Navbar.Brand>
         </Container>
       </Navbar>
-      
-      <div className="Container mt-5 ml-5 mb-4" align="center" >
-        
-        <div className="row mx-auto mt-5" >
+
+      <div className="Container mt-5 ml-5 mb-4" align="center">
+        <div className="row mx-auto mt-5">
           <div className="mx-auto col-md-6 mt-5 pt-4">
             <div className="card mb-5 p-2 shadow rounded">
               <div className="card-body mt-1">
@@ -122,47 +117,64 @@ export default function Login() {
                   <h3 className="text-success text-center border-bottom border-success p-3 ml-5">
                     LOGIN
                   </h3>
-
-                  <div className={`form-outline mb-10 ${errors.email ? "has-danger" : ""}`}>
+                  <div
+                    className={`form-outline mb-10 ${
+                      errors.email ? "has-danger" : ""
+                    }`}
+                  >
                     <label className="form-label">Enter the Credentials</label>
                     <input
                       type="text"
                       placeholder="Enter the Username"
-                      className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                      className={`form-control ${
+                        errors.email ? "is-invalid" : ""
+                      }`}
                       onChange={(e) => handleUsernameChange(e.target.value)}
                     />
-                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                    {errors.email && (
+                      <div className="invalid-feedback">{errors.email}</div>
+                    )}
                   </div>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <div className={`form-outline mb-5 ${errors.password ? "has-danger" : ""}`}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div
+                    className={`form-outline mb-5 ${
+                      errors.password ? "has-danger" : ""
+                    }`}
+                  >
                     <input
                       type="password"
-                      className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                      className={`form-control ${
+                        errors.password ? "is-invalid" : ""
+                      }`}
                       placeholder="Enter the Password"
                       onChange={(e) => handlePasswordChange(e.target.value)}
                     />
-                    {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                    {errors.password && (
+                      <div className="invalid-feedback">{errors.password}</div>
+                    )}
                   </div>
                   <div className="custom-margin">
-                    <div className="mb-10"> {/* Add margin-bottom class to create spacing */}
-                      <button className="btn btn-primary" onClick={() => handleLogin(email, password)}>
+                    <div className="mb-10">
+                      {" "}
+                      {/* Add margin-bottom class to create spacing */}
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => handleLogin(email, password)}
+                      >
                         LOGIN
                       </button>
-
-
                     </div>
                   </div>
                 </div>
                 <div className="custom-margin">
                   <div className="mb-1 mt-5 text-success ml-0">
-
                     <div style={{ textAlign: "left" }} className="mt-4">
                       <span>
                         Don't have an account?
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button
                           className="btn btn-primary"
-                          onClick={() => navigate("/signup/signup")}
+                          onClick={() => navigate("/signup")}
                         >
                           signup
                         </button>
