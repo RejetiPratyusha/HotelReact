@@ -24,19 +24,10 @@ function Hotel() {
     height: "400px",
   };
 
-  const cardBodyStyle = {
-    height: "90%",
-  };
-
-  const reviewStyle = {
-    height: "100%",
-    overflow: "auto",
-  };
-
   return (
     <div
       style={{
-        backgroundImage: "url(/h5.jpg)",
+        backgroundImage: "url(/hotels1.jpg)",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
@@ -44,14 +35,23 @@ function Hotel() {
     >
       <div>
         <NavbarComponent />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <div>
+        {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
+        <div
+          style={{
+            marginBottom: "50px",
+            width: "800px",
+            justifyContent: "center",
+            margin: "auto",
+          }}
+        >
           <SearchHotels />
         </div>
         <div
           className="d-flex  
                         justify-content-center vh-100"
+          style={{ marginTop: "50px" }}
         >
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <div className="row">
             {hotels.map(({ name, address, id, email, phone_number }, index) => (
               <div key={index} className="col-md-4 mb-4">
@@ -73,7 +73,10 @@ function Hotel() {
                       </div>
                     </Tab>
                     <Tab eventKey="reviews" title="Reviews">
-                      <div className="card-body" style={reviewStyle}>
+                      <div
+                        className="card-body"
+                        style={{ overflowY: "scroll", height: "350px" }}
+                      >
                         <Reviews idForHotel={id} />
                       </div>
                     </Tab>

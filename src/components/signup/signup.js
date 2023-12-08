@@ -67,7 +67,15 @@ function Signup() {
       });
   };
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: "url(/login1.jpg)",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        width: "100vw",
+        height: "110vh",
+      }}
+    >
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
           <Navbar.Brand>FEEL HOME</Navbar.Brand>
@@ -160,18 +168,18 @@ function Signup() {
                 <button className="btn btn-primary" onClick={() => doSignUp()}>
                   SignUp
                 </button>
+                <div style={{ textAlign: "left" }}>
+                  <span>
+                    Have an Account? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => navigate("/login")}
+                    >
+                      Login
+                    </button>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div style={{ textAlign: "left" }} className="mt-4">
-              <span>
-                Have an Account? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button
-                  className="btn btn-primary"
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </button>
-              </span>
             </div>
           </div>
           <div className="col-md-3"></div>

@@ -1,16 +1,32 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
-import { useNavigate } from "react-router";
-import { AutoComplete, Form } from "antd";
+import {
+  useNavigate,
+  createSearchParams,
+  useSearchParams,
+  useParams,
+} from "react-router-dom";
+import { AutoComplete, Form, DatePicker } from "antd";
+import { dayjs } from "dayjs";
+
+const { RangePicker } = DatePicker;
 
 function SearchHotels() {
-  const [location, setLocation] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  // const { checkIn: defaultCheckIn = "", checkOut: defaultCheckOut = "" } =
+  //   useSearchParams();
+  // console.log(useSearchParams());
+  const { location: defaultLocation } = useParams();
+  const [location, setLocation] = useState(defaultLocation);
+  // const [dateRange, setDateRange] = useState([
+  //   dayjs(defaultCheckIn),
+  //   dayjs(defaultCheckOut),
+  // ]);
+  // const [checkIn, setCheckIn] = useState(defaultCheckIn);
+  // const [checkOut, setCheckOut] = useState(defaultCheckOut);
+  const [checkIn, setCheckIn] = useState();
+  const [checkOut, setCheckOut] = useState();
   const [locationsList, setLocationsList] = useState([]);
-
-  console.log(locationsList);
 
   const navigate = useNavigate();
 
@@ -51,12 +67,13 @@ function SearchHotels() {
         <div
           className="card"
           style={{
-            display: "flex",
-
             alignItems: "center",
+            height: "15vh",
           }}
         >
-          <Row style={{ height: "10vh" }}>
+          <Row
+            style={{ height: "10vh", marginTop: "20px", marginLeft: "30px" }}
+          >
             <Col xs="auto">
               <Form form={form}>
                 <Form.Item label="Location">
@@ -70,36 +87,64 @@ function SearchHotels() {
                         .indexOf(inputValue.toUpperCase()) !== -1
                     }
                     onSelect={onSelect}
+                    value={location}
                   />
                 </Form.Item>
+                {/* <RangePicker
+                  onChange={(dates, dateString) => {
+                    setDateRange(dates);
+                    setCheckIn(dateString[0]);
+                    setCheckOut(dateString[1]);
+                  }}
+                  value={dateRange}
+                /> */}
               </Form>
             </Col>
             <Col xs="auto">
-              <label>checkIn: </label>
+              <label style={{ marginRight: "10px" }}>checkIn: </label>
               <input
                 type="date"
                 placeholder="CheckIn"
                 className=" mr-sm-2"
                 onChange={(e) => setCheckIn(e.target.value)}
                 min={getCurrentDate()}
+                value={checkIn}
               />
             </Col>
             <Col xs="auto">
-              <label>checkOut: </label>
+              <label style={{ marginRight: "10px" }}>checkOut: </label>
               <input
                 type="date"
                 placeholder="CheckOut"
                 className=" mr-sm-2"
-                onChange={(e) => setCheckOut(e.target.value)}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setCheckOut(e.target.value);
+                }}
                 min={getCurrentDate()}
+                value={checkOut}
               />
             </Col>
 
             <row>
-              <Col xs="auto">
+              <Col
+                xs="auto"
+                style={{ margin: "auto", justifycontent: " center" }}
+              >
                 <button
                   className="btn btn-primary"
-                  onClick={() => navigate(`/hotel/${location}`)}
+                  style={{
+                    alignItems: "center",
+                  }}
+                  onClick={() =>
+                    navigate({
+                      pathname: `/hotel/${location}`,
+                      search: createSearchParams({
+                        checkIn,
+                        checkOut,
+                      }).toString(),
+                    })
+                  }
                 >
                   search
                 </button>

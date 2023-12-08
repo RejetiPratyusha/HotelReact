@@ -1,11 +1,28 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Nav, Navbar, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Dropdown } from "antd";
 
 function NavbarComponent({ func }) {
   //{1,2,3,4}
 
   const [qStr, setQStr] = useState("");
+
+  const menuItems = [
+    {
+      key: "my-profile",
+      label: <p>My Profile</p>,
+    },
+    {
+      key: "my-bookings",
+      label: <p>My Bookings</p>,
+    },
+    {
+      key: "logout",
+      label: <a href="/login">Logout</a>,
+    },
+  ];
 
   const navigate = useNavigate();
   return (
@@ -23,12 +40,14 @@ function NavbarComponent({ func }) {
               func(qStr);
             }}
           >
-            <Button
-              className="btn btn-primary"
-              onClick={() => navigate("/signup")}
-            >
-              Signup
-            </Button>
+            {!localStorage.getItem("isLoggedIn") ? (
+              <Button
+                className="btn btn-primary"
+                onClick={() => navigate("/signup")}
+              >
+                Signup
+              </Button>
+            ) : null}
           </Form>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {localStorage.getItem("isLoggedIn") ? (
@@ -39,6 +58,9 @@ function NavbarComponent({ func }) {
                   {localStorage.getItem("username")}
                 </span>
               </Navbar.Text>
+              <Dropdown menu={{ items: menuItems }} placement="bottomRight">
+                <Avatar size="large" icon={<UserOutlined />} />
+              </Dropdown>
               &nbsp;&nbsp;&nbsp;
               <button
                 className="btn btn-info btn-sm ml-4"

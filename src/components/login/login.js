@@ -38,55 +38,52 @@ export default function Login() {
   };
 
   const handleLogin = async (email, password) => {
-    try {
-      let token = window.btoa(username + ":" + password);
-      axios
-        .get("http://localhost:8083/user/login", {
-          headers: {
-            Authorization: "Basic " + token,
-          },
-        })
-        .then(function (response) {
-          //handle success
-          localStorage.setItem("username", username);
-          localStorage.setItem("token", token);
-          localStorage.setItem("id", response.data.id + 1);
-          localStorage.setItem("isLoggedIn", true);
-          let role = response.data.role;
+    let token = window.btoa(username + ":" + password);
+    axios
+      .get("http://localhost:8083/user/login", {
+        headers: {
+          Authorization: "Basic " + token,
+        },
+      })
+      .then(function (response) {
+        //handle success
+        localStorage.setItem("username", username);
+        localStorage.setItem("token", token);
+        localStorage.setItem("id", response.data.id + 1);
+        localStorage.setItem("isLoggedIn", true);
+        let role = response.data.role;
 
-          switch (role) {
-            case "CUSTOMER":
-              const state = location.state;
-              if (state?.from) {
-                // Redirects back to the previous unauthenticated routes
-                navigate(state?.from);
-              } else {
-                navigate(-1);
-              }
+        switch (role) {
+          case "CUSTOMER":
+            const state = location.state;
+            if (state?.from) {
+              // Redirects back to the previous unauthenticated routes
+              navigate(state?.from);
+            } else {
+              navigate("/");
+            }
 
-              // const roomId = localStorage.getItem("roomId");
-              break;
-            case "Admin":
-              navigate("/Admin/AdminDashboard");
-              break;
-            case "EXECUTIVE":
-              navigate("/Executive/executiveDashboard");
-              break;
-            case "Hr":
-              navigate("/Hr/HrDashboard");
-              break;
-            default:
-          }
-        })
-        .catch(function (error) {
-          //handle error
-          setMsg("Invalid Credentials");
-        });
-
-      message.success("login successfully");
-    } catch (error) {
-      message.error("email/password wrong");
-    }
+            // const roomId = localStorage.getItem("roomId");
+            break;
+          case "Admin":
+            navigate("/Admin/AdminDashboard");
+            break;
+          case "EXECUTIVE":
+            navigate("/Executive/executiveDashboard");
+            break;
+          case "Hr":
+            navigate("/Hr/HrDashboard");
+            break;
+          default:
+        }
+      })
+      .catch(function (error) {
+        console.log("Invalid");
+        //handle error
+        //setMsg("Invalid Credentials");
+        alert("Invalid Credentials");
+        return;
+      });
   };
 
   const styles = {
@@ -101,10 +98,22 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: "url(/login1.jpg)",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        width: "100vw",
+        height: "110vh",
+      }}
+    >
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
           <Navbar.Brand>FEEL HOME</Navbar.Brand>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Navbar.Brand href="/" onClick={() => navigate("/")}>
+            <button className="btn btn-primary">Home</button>
+          </Navbar.Brand>
         </Container>
       </Navbar>
 

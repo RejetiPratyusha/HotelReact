@@ -6,6 +6,8 @@ import "./bookRoom.css";
 import { useParams } from "react-router-dom";
 import { FamilyDetailsForm } from "./familyDetailsForm";
 import { Card } from "@material-ui/core";
+import { HotelDetails } from "../hotels/hotel-details";
+import { CheckPrice } from "./checkPrice";
 
 function BookRoom() {
   const [booking, setBooking] = useState();
@@ -18,8 +20,11 @@ function BookRoom() {
   const customerId = localStorage.getItem("id");
 
   const [hotelData, setHotelData] = useState([]);
+  const [hotelName, setHotelName] = useState();
   const [priceResponse, setPriceResponse] = useState(null);
-  const [isRoomAvailable, setIsRoomAvailable] = useState(false);
+  const [isRoomAvailable, setIsRoomAvailable] = useState({
+    available: false,
+  });
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -41,6 +46,14 @@ function BookRoom() {
       .then((response) => setHotelData(response.data));
   }, [hotelId]);
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8083/hotel/getByHotel/${hotelId}`)
+      .then((response) => setHotelName(response.data));
+  }, [hotelId]);
+
+  console.log(hotelName);
+
   const handleCheckPrice = () => {
     axios
       .post(`http://localhost:8083/feelhome/getPrice`, {
@@ -51,7 +64,7 @@ function BookRoom() {
         roomType,
       })
       .then((res) => {
-        setPriceResponse(res.data);
+        setIsRoomAvailable(res.data);
       })
       .catch((e) => {
         console.log(e);
@@ -96,10 +109,17 @@ function BookRoom() {
         ) : (
           <div className="app-container">
             <div class="left-column">
-              <div className="card">
+              <div
+                className="card"
+                style={{
+                  justifyContent: "center",
+                  margin: "auto",
+                }}
+              >
                 <div className="card-header">
                   <h3>Room Booking</h3>
                 </div>
+                <HotelDetails {...hotelName} />
                 <div className="row " style={{ textAlign: "right" }}>
                   {/* PrePopulate values */}
                   <div className="col-md-6">
@@ -209,41 +229,23 @@ function BookRoom() {
                     Check availability
                   </button>
                 </div>
+                {!isRoomAvailable.available && isRoomAvailable.price === 0 ? (
+                  <p>No rooms available</p>
+                ) : null}
               </div>
             </div>
-            {priceResponse?.available ? (
+            {isRoomAvailable.available && isRoomAvailable.price > 0 ? (
               <div class="right-column">
                 <div>
-                  <Card.Text>
-                    <label>
-                      <h6>Number of Rooms for Booking: </h6>
-                    </label>
-                    &nbsp;&nbsp;
-                    {numberOfRooms}
-                  </Card.Text>
-                  <Card.Text>
-                    <label>
-                      <h6>CheckIn</h6>
-                    </label>
-                    &nbsp;&nbsp;
-                    {checkIn}
-                  </Card.Text>
-                  {/* <Card.Text>
-                    <label>
-                      <h6>Total Price</h6>
-                    </label>
-                    &nbsp;&nbsp;
-                    {isRoomAvailable.price}
-                  </Card.Text> */}
-                  {/* <Button variant="primary">Go somewhere</Button> */}
+                  <CheckPrice
+                    checkIn={checkIn}
+                    isRoomAvailable={isRoomAvailable}
+                    numberOfRooms={numberOfRooms}
+                  />
                 </div>
                 <div>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button
-                    className="btn btn-primary"
-                    onClick={handleBookRooms}
-                    disabled={!isRoomAvailable}
-                  >
+                  <button className="btn btn-primary" onClick={handleBookRooms}>
                     Book My Room
                   </button>
                 </div>
