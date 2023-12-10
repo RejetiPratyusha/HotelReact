@@ -20,72 +20,42 @@ function Hotel() {
   }, [location]);
 
   const cardStyle = {
-    width: "300px",
+    width: "100%",
     height: "400px",
   };
 
   return (
     <div
-      style={{
-        backgroundImage: "url(/hotels1.jpg)",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
+    // style={{
+    //   backgroundImage: "url(/hotels1.jpg)",
+    //   backgroundSize: "cover",
+    //   backgroundRepeat: "no-repeat",
+    //   backgroundPosition: "center",
+    // }}
     >
       <div>
         <NavbarComponent />
-        {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
-        <div
-          style={{
-            marginBottom: "50px",
-            width: "800px",
-            justifyContent: "center",
-            margin: "auto",
-          }}
-        >
-          <SearchHotels />
-        </div>
-        <div
-          className="d-flex  
-                        justify-content-center vh-100"
-          style={{ marginTop: "50px" }}
-        >
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <div className="row">
-            {hotels.map(({ name, address, id, email, phone_number }, index) => (
-              <div key={index} className="col-md-4 mb-4">
-                <Card style={cardStyle}>
-                  <Tabs defaultActiveKey="hotels" id="tabs">
-                    <Tab eventKey="hotels" title="Hotels">
-                      <div className="card-body">
-                        <HotelDetails
-                          name={name}
-                          address={address}
-                          email={email}
-                          phone_number={phone_number}
-                        />
-                      </div>
-                    </Tab>
-                    <Tab eventKey="room" title="Rooms">
-                      <div className="card-body">
-                        <RoomDetails hotelId={id} location={location} />
-                      </div>
-                    </Tab>
-                    <Tab eventKey="reviews" title="Reviews">
-                      <div
-                        className="card-body"
-                        style={{ overflowY: "scroll", height: "350px" }}
-                      >
-                        <Reviews idForHotel={id} />
-                      </div>
-                    </Tab>
-                  </Tabs>
-                </Card>
-              </div>
-            ))}
+        <SearchHotels />
+        {hotels.map((hotel, index) => (
+          <div
+            style={{
+              margin: "20px 0",
+              display: "flex",
+            }}
+          >
+            <img
+              src={`/h${index + 1}.jpg` ?? "/h4.jpg"}
+              alt={hotel.name}
+              style={{
+                borderRadius: "10px",
+                border: "1px solid #ccc",
+                margin: "0 20px",
+              }}
+              height={300}
+            />
+            <HotelDetails hotel={hotel} />
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

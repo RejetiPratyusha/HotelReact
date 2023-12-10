@@ -1,0 +1,69 @@
+.user-profile-name {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .user-profile-contact {
+    font-size: 1.5rem;
+  }
+  
+  .user-profile-date-of-birth {
+    font-size: 1.5rem;
+  }
+  
+  .user-profile-email {
+    font-size: 1.5rem;
+  }
+  
+  .user-profile-username {
+    font-size: 1.5rem;
+  }
+
+  .user-profile {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Style for user details labels */
+  .user-label {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 25px;
+    font-family:'Times New Roman', Times, serif;
+    margin-left: 100px;
+    color: #1d1d1a; /* Add the desired color for user labels, e.g., blue */
+  }
+  
+  /* Style for user details values */
+  .user-value {
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+  
+  /* Style for the table */
+   .tab {
+    background-color: hsla(306, 79%, 39%, 0.54); /* Add the desired background color for the table, e.g., light gray */
+    border-radius: 5px; /* Add rounded corners to the table */
+    padding: 10px; /* Add some padding to the table cells */
+    margin: 4px 4px 4px 4px;
+    border:4px solid black;
+    box-shadow: 1px 6px 20px green;
+  } 
+  
+  /* Style for the "Back" button */
+  .btn-primary {
+    margin-top: 20px;
+  }
+
+  .btn-primary:hover
+  {
+    color:chartreuse;
+    font-size: large;
+    font-weight: bold;
+  }
+
+  .bt
+  {
+    margin-left: 100px
+  }

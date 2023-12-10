@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useSearchParams,
+  createSearchParams,
+  redirect,
+} from "react-router-dom";
 import { message } from "antd";
 import { Container, Navbar } from "react-bootstrap";
 
@@ -58,15 +64,21 @@ export default function Login() {
             const state = location.state;
             if (state?.from) {
               // Redirects back to the previous unauthenticated routes
-              navigate(state?.from);
+              navigate({
+                pathname: state?.from,
+                search: createSearchParams({
+                  checkIn: state.checkIn,
+                  checkOut: state.checkOut,
+                }).toString(),
+              });
             } else {
               navigate("/");
             }
 
             // const roomId = localStorage.getItem("roomId");
             break;
-          case "Admin":
-            navigate("/Admin/AdminDashboard");
+          case "HOTEL_ADMIN":
+            navigate("/AdminDashboard");
             break;
           case "EXECUTIVE":
             navigate("/Executive/executiveDashboard");

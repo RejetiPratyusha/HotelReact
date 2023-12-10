@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Nav, Navbar, Row } from "react-bootstrap";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown } from "antd";
 
@@ -9,18 +9,26 @@ function NavbarComponent({ func }) {
 
   const [qStr, setQStr] = useState("");
 
+  function clearLocalStorage() {
+    localStorage.clear();
+  }
+
   const menuItems = [
     {
       key: "my-profile",
-      label: <p>My Profile</p>,
+      label: <Link to="/customerProfile">My Profile</Link>,
     },
     {
       key: "my-bookings",
-      label: <p>My Bookings</p>,
+      label: <Link to="/customerbookingdetails">My Bookings</Link>,
     },
     {
       key: "logout",
-      label: <a href="/login">Logout</a>,
+      label: (
+        <Link onClick={() => clearLocalStorage()} to="/login">
+          Logout
+        </Link>
+      ),
     },
   ];
 
@@ -62,7 +70,7 @@ function NavbarComponent({ func }) {
                 <Avatar size="large" icon={<UserOutlined />} />
               </Dropdown>
               &nbsp;&nbsp;&nbsp;
-              <button
+              {/* <button
                 className="btn btn-info btn-sm ml-4"
                 onClick={() => {
                   localStorage.clear();
@@ -70,7 +78,7 @@ function NavbarComponent({ func }) {
                 }}
               >
                 Logout
-              </button>
+              </button> */}
             </React.Fragment>
           ) : (
             <button

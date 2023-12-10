@@ -10,6 +10,10 @@ import ExecutiveDashboard from "./components/Executive/executiveDashboard";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import HrDashboard from "./components/Hr/HrDashboard";
 import BookingDetails from "./components/booking/booking-details";
+import { CustomerBookingDetails } from "./components/booking/customerbookingdetails";
+import Profile from "./components/customer/customerprofile";
+import AdminProfile from "./components/Admin/adminProfile";
+import EditRoom from "./components/Admin/EditRoom";
 
 function App() {
   return (
@@ -19,6 +23,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/hotel/:location" element={<Hotel />} />
+        <Route path="/customerProfile" element={<Profile />} />
+        <Route path="/AdminProfile" element={<AdminProfile />} />
+        <Route path="/EditRoom" element={<EditRoom />} />
+
+        <Route
+          path="/customerbookingdetails"
+          element={<CustomerBookingDetails />}
+        />
         <Route
           path="/hotel/:location/book/:hotelId/room/:roomId"
           element={<BookRoom />}
@@ -32,10 +44,7 @@ function App() {
           path="/Executive/executiveDashboard"
           element={<ExecutiveDashboard />}
         ></Route>
-        <Route
-          path="/Admin/AdminDashboard"
-          element={<AdminDashboard />}
-        ></Route>
+        <Route path="/AdminDashboard" element={<AdminDashboard />}></Route>
         <Route path="/Hr/HrDashboard" element={<HrDashboard />}></Route>
         <Route
           path="/booking/booking-details"
