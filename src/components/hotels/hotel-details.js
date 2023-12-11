@@ -11,8 +11,12 @@ export const HotelDetails = ({ hotel = {} }) => {
       label: name,
       children: (
         <>
+          <h6>Address:</h6>
           <p>{address}</p>
+          <br />
+          <h6>Contact:</h6>
           <p>{phone_number}</p>
+          <h6>Email:</h6>
           <p>{email}</p>
         </>
       ),

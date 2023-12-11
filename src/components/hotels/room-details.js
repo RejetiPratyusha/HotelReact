@@ -16,8 +16,6 @@ export const RoomDetails = ({ hotelId }) => {
   const { location } = useParams();
   const [searchParams] = useSearchParams();
 
-  console.log(window.location.href);
-
   useEffect(() => {
     axios
       .get(`http://localhost:8083/feelhome/rooms/getByHotel/${hotelId}`)

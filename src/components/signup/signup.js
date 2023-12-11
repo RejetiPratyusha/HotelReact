@@ -1,3 +1,5 @@
+import { MailTwoTone, PhoneTwoTone } from "@ant-design/icons";
+import { Radio } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import { Container, Navbar } from "react-bootstrap";
@@ -11,6 +13,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [customer, setCustomer] = useState({});
   const [msg, setMsg] = useState("");
+  const [gender, setGender] = useState();
   const navigate = useNavigate();
 
   const doSignUp = () => {
@@ -49,6 +52,7 @@ function Signup() {
       name: name,
       phone: phone,
       email: email,
+
       user: {
         username: username,
         password: password,
@@ -112,7 +116,9 @@ function Signup() {
                   </div>
 
                   <div className="col-md-6">
-                    <label>Enter Email:</label>
+                    <label>
+                      Enter Email: <MailTwoTone />
+                    </label>
                   </div>
                   <div className="col-md-6 mb-4">
                     <input
@@ -124,7 +130,9 @@ function Signup() {
 
                   {/* Read Contact */}
                   <div className="col-md-6">
-                    <label>Enter Contact No:</label>
+                    <label>
+                      Enter Contact No: <PhoneTwoTone />
+                    </label>
                   </div>
                   <div className="col-md-6 mb-4">
                     <input
@@ -132,6 +140,19 @@ function Signup() {
                       className="form-control"
                       onChange={(e) => setPhone(e.target.value)}
                     />
+                  </div>
+                  <div className="col-md-6">
+                    <label>Select Gender:</label>
+                  </div>
+                  <div className="col-md-6">
+                    <Radio.Group
+                      onChange={(e) => setGender(e.target.value)}
+                      value={gender}
+                    >
+                      <Radio value="male">Male</Radio>
+                      <Radio value="female">Female</Radio>
+                      <Radio value="other">Other</Radio>
+                    </Radio.Group>
                   </div>
 
                   <hr />

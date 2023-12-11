@@ -13,15 +13,14 @@ import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 
 function SearchHotels() {
-  const { checkIn: defaultCheckIn, checkOut: defaultCheckOut } =
-    useSearchParams();
+  const [searchParams] = useSearchParams();
+  const checkIn = searchParams.get("checkIn");
+  const checkOut = searchParams.get("checkOut");
   console.log(useSearchParams());
   const { location: defaultLocation } = useParams();
   const [location, setLocation] = useState(defaultLocation);
-  const [dateRange, setDateRange] = useState(() =>
-    defaultCheckIn && defaultCheckOut
-      ? [dayjs(defaultCheckIn), dayjs(defaultCheckOut)]
-      : []
+  const [dateRange, setDateRange] = useState(
+    checkIn && checkOut ? [dayjs(checkIn), dayjs(checkOut)] : []
   );
   // const [checkIn, setCheckIn] = useState(defaultCheckIn);
   // const [checkOut, setCheckOut] = useState(defaultCheckOut);
@@ -42,6 +41,12 @@ function SearchHotels() {
       });
   }, []);
 
+  // const dispatch = useDispatch();
+  // let { list } = useSelector((state) => state.location);
+  // useEffect(() => {
+  //   dispatch(getLocations());
+  // }, [dispatch]);
+
   const onSelect = (data) => {
     setLocation(data);
   };
@@ -50,45 +55,57 @@ function SearchHotels() {
 
   return (
     <Card title="Search hotels">
-      <Form form={form}>
-        <Form.Item label="Location">
+      <Form
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "center",
+        }}
+      >
+        <Form.Item name="location">
           <AutoComplete
             style={{ width: 200 }}
             options={locationsList}
             placeholder="search location"
             filterOption={(inputValue, option) =>
-              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
-              -1
+              option.value.toLowerCase().includes(inputValue.toLowerCase())
             }
             onSelect={onSelect}
             value={location}
+            defaultValue={defaultLocation}
           />
         </Form.Item>
         <RangePicker
+          style={{ margin: "0 20px" }}
           value={dateRange}
           onChange={(dates) => setDateRange(dates)}
           format="DD-MM-YYYY"
           placeholder={["Check in", "Check out"]}
           disabledDate={(current) => current < dayjs()}
+          // defaultValue={
+          //   defaultCheckIn && defaultCheckOut
+          //     ? [dayjs(defaultCheckIn), dayjs(defaultCheckOut)]
+          //     : []
+          // }
         />
+        <Button
+          type="primary"
+          style={{
+            margin: "20px 0",
+          }}
+          onClick={() =>
+            navigate({
+              pathname: `/hotel/${location}`,
+              search: createSearchParams({
+                checkIn: dateRange[0].format("YYYY-MM-DD"),
+                checkOut: dateRange[1].format("YYYY-MM-DD"),
+              }).toString(),
+            })
+          }
+        >
+          Search
+        </Button>
       </Form>
-      <Button
-        type="primary"
-        style={{
-          margin: "20px 0",
-        }}
-        onClick={() =>
-          navigate({
-            pathname: `/hotel/${location}`,
-            search: createSearchParams({
-              checkIn: dateRange[0].format("YYYY-MM-DD"),
-              checkOut: dateRange[1].format("YYYY-MM-DD"),
-            }).toString(),
-          })
-        }
-      >
-        Search
-      </Button>
     </Card>
   );
 }

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { message } from "antd";
+import axios from "axios";
 
 export const EditRoom = ({ roomDetails = {} }) => {
   const {
@@ -12,7 +14,9 @@ export const EditRoom = ({ roomDetails = {} }) => {
   const [price, setPrice] = useState(defaultPrice);
   const [avalaibleRooms, setAvalaibleRooms] = useState(defaultTotalRooms);
 
-  //const { hotelId } = localStorage.getItem("hotelId");
+  const navigate = useNavigate();
+
+  const { hotelId } = localStorage.getItem("hotelId");
 
   const handleTypeChange = (value) => {
     setRoomType(value);
@@ -25,35 +29,22 @@ export const EditRoom = ({ roomDetails = {} }) => {
     setAvalaibleRooms(parseInt(value));
   };
 
-  const handleSave = () => {
-    // axios
-    //   .post("http://localhost:8083/feelhome/room/add/" + param.get("hid"), {
-    //     HotelId: hotelId,
-    //     room_type: roomType,
-    //     price: price,
-    //     totalRooms: avalaibleRooms,
-    //   })
-    //   .then((res) => {
-    //     setRooms(res.data);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+  const handleUpdate = () => {
     const data = {
       room_type: roomType,
       price: price,
       totalRooms: avalaibleRooms,
     };
-    // console.log(hotelId);
-    // axios
-    //   .post(`http://localhost:8083/feelhome/room/add/${hotelId}`, data)
-    //   .then((result) => {
-    //     message.success("room  added");
-    //     navigate("/AdminDashboard");
-    //   }, [])
-    //   .catch((error) => {
-    //     message.error(error);
-    //   });
+    console.log(hotelId);
+    axios
+      .post(`http://localhost:8083/feelhome/room/update/${hotelId}`, data)
+      .then((result) => {
+        message.success("room  added");
+        navigate("/AdminDashboard");
+      }, [])
+      .catch((error) => {
+        message.error(error);
+      });
   };
 
   return (
@@ -93,8 +84,8 @@ export const EditRoom = ({ roomDetails = {} }) => {
       />{" "}
       <br></br>
       {/* </div> */}
-      <button class="btn btn-primary" onClick={() => handleSave()}>
-        Save
+      <button class="btn btn-primary" onClick={() => handleUpdate()}>
+        Update
       </button>
     </>
   );

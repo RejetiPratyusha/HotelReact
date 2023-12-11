@@ -23,6 +23,19 @@ function AdminDashboard() {
       .catch((e) => console.log(e));
   }, [adminId]);
   const process = () => {
+    if (!param.get("page")) {
+      return (
+        <div>
+          <h1
+            style={{
+              justifyContent: "center",
+            }}
+          >
+            Welcome Admin
+          </h1>
+        </div>
+      );
+    }
     if (param.get("page") === `ViewallBookings/${hotel.id}`) {
       return (
         <div>
@@ -73,7 +86,7 @@ function AdminDashboard() {
         <Container>
           <Navbar.Brand>FEEL HOME</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/AdminDashboard">Home</Nav.Link>
             <Nav.Link
               onClick={() =>
                 navigate(`/AdminDashboard?page=ViewallBookings/${hotel.id}`)

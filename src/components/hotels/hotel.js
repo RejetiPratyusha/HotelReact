@@ -1,12 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSearchParams, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./hotel.css";
-import { Card, Tab, Tabs } from "react-bootstrap";
 import NavbarComponent from "../navbar/navbar";
 import { HotelDetails } from "./hotel-details";
-import { RoomDetails } from "./room-details";
-import { Reviews } from "./reviews";
 import SearchHotels from "../search/SearchHotels";
 
 function Hotel() {
@@ -19,20 +16,8 @@ function Hotel() {
       .then((response) => setHotels(response.data));
   }, [location]);
 
-  const cardStyle = {
-    width: "100%",
-    height: "400px",
-  };
-
   return (
-    <div
-    // style={{
-    //   backgroundImage: "url(/hotels1.jpg)",
-    //   backgroundSize: "cover",
-    //   backgroundRepeat: "no-repeat",
-    //   backgroundPosition: "center",
-    // }}
-    >
+    <div>
       <div>
         <NavbarComponent />
         <SearchHotels />

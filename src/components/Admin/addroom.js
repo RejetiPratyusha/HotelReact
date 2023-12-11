@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { message } from "antd";
 
 const AddRoom = ({ hotelId }) => {
-  //const [hotelId, setHotelId] = useState('');
   const [roomType, setRoomType] = useState("");
   const [price, setPrice] = useState("");
   const [avalaibleRooms, setAvalaibleRooms] = useState("");
-  const [rooms, setRooms] = useState("");
-
-  const [param] = useSearchParams();
-  //const { hotelId } = localStorage.getItem("hotelId");
 
   const navigate = useNavigate();
 
