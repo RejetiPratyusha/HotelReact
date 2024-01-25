@@ -15,12 +15,16 @@ export const RoomDetails = ({ hotelId }) => {
   const navigate = useNavigate();
   const { location } = useParams();
   const [searchParams] = useSearchParams();
-
+  let token = localStorage.getItem("token");
   useEffect(() => {
     axios
-      .get(`http://localhost:8083/feelhome/rooms/getByHotel/${hotelId}`)
+      .get(`http://localhost:8083/feelhome/rooms/getByHotel/${hotelId}`, {
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      })
       .then((response) => setRooms(response.data));
-  }, [hotelId]);
+  }, [hotelId, token]);
 
   const handleBooking = (roomId, room_type) => {
     localStorage.setItem("roomId", roomId);

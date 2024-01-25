@@ -14,12 +14,17 @@ import { EditRoom } from "./EditRoom";
 export const ViewRooms = ({ hotelId }) => {
   const [roomList, setRoomList] = useState([]);
   const [editRoom, setEditRoom] = useState({});
+  let token = localStorage.getItem("token");
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8083/feelhome/rooms/getByHotel/${hotelId}`)
+      .get(`http://localhost:8083/feelhome/rooms/getByHotel/${hotelId}`, {
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      })
       .then((response) => setRoomList(response.data));
-  }, [hotelId]);
+  }, [hotelId, token]);
   return (
     <div>
       {editRoom?.id ? (

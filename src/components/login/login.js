@@ -1,24 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  useLocation,
-  useNavigate,
-  useSearchParams,
-  createSearchParams,
-  redirect,
-} from "react-router-dom";
-import { message } from "antd";
+import { useLocation, useNavigate, createSearchParams } from "react-router-dom";
+
 import { Container, Navbar } from "react-bootstrap";
 
 export default function Login() {
-  const [param] = useSearchParams();
-  const [email, setEmail] = useState("");
+  const [email] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
-  const [msg, setMsg] = useState(param.get("msg"));
+  const [errors] = useState({});
+
   const [username, setUsername] = useState("");
 
-  const auth = localStorage.getItem("user");
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -27,20 +19,10 @@ export default function Login() {
 
   const handleUsernameChange = (value) => {
     setUsername(value);
-    // Clear any previous email validation errors
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      email: null,
-    }));
   };
 
   const handlePasswordChange = (value) => {
     setPassword(value);
-    // Clear any previous password validation errors
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      password: null,
-    }));
   };
 
   const handleLogin = async (email, password) => {
@@ -58,7 +40,7 @@ export default function Login() {
         localStorage.setItem("id", response.data.id + 1);
         localStorage.setItem("isLoggedIn", true);
         let role = response.data.role;
-
+        console.log(token);
         switch (role) {
           case "CUSTOMER":
             const state = location.state;
@@ -98,17 +80,6 @@ export default function Login() {
       });
   };
 
-  const styles = {
-    background: {
-      backgroundImage: "h4.jpg",
-      backgroundSize: "cover",
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  };
-
   return (
     <div
       style={{
@@ -138,18 +109,12 @@ export default function Login() {
                   <h3 className="text-success text-center border-bottom border-success p-3 ml-5">
                     LOGIN
                   </h3>
-                  <div
-                    className={`form-outline mb-10 ${
-                      errors.email ? "has-danger" : ""
-                    }`}
-                  >
+                  <div>
                     <label className="form-label">Enter the Credentials</label>
                     <input
                       type="text"
+                      className={`form-control `}
                       placeholder="Enter the Username"
-                      className={`form-control ${
-                        errors.email ? "is-invalid" : ""
-                      }`}
                       onChange={(e) => handleUsernameChange(e.target.value)}
                     />
                     {errors.email && (
@@ -157,11 +122,7 @@ export default function Login() {
                     )}
                   </div>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <div
-                    className={`form-outline mb-5 ${
-                      errors.password ? "has-danger" : ""
-                    }`}
-                  >
+                  <div>
                     <input
                       type="password"
                       className={`form-control ${
@@ -170,9 +131,6 @@ export default function Login() {
                       placeholder="Enter the Password"
                       onChange={(e) => handlePasswordChange(e.target.value)}
                     />
-                    {errors.password && (
-                      <div className="invalid-feedback">{errors.password}</div>
-                    )}
                   </div>
                   <div className="custom-margin">
                     <div className="mb-10">

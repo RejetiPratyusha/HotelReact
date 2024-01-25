@@ -11,12 +11,16 @@ import { useEffect, useState } from "react";
 
 const ViewBookingDetails = ({ hotelId }) => {
   const [bookingList, setBookingList] = useState([]);
-
+  let token = localStorage.getItem("token");
   useEffect(() => {
     axios
-      .get(`http://localhost:8083/feelhome/bookingsByHotelId/${hotelId}`)
+      .get(`http://localhost:8083/feelhome/bookingsByHotelId/${hotelId}`, {
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      })
       .then((response) => setBookingList(response.data));
-  }, [hotelId]);
+  }, [hotelId, token]);
 
   return (
     <div>

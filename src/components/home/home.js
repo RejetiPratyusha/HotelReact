@@ -24,7 +24,6 @@ class Home extends Component {
         <NavbarComponent />
         <div className="container" style={containerStyle}>
           <div>
-            {/* <Header /> */}
             <SearchHotels />
           </div>
         </div>

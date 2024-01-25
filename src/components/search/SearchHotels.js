@@ -22,8 +22,6 @@ function SearchHotels() {
   const [dateRange, setDateRange] = useState(
     checkIn && checkOut ? [dayjs(checkIn), dayjs(checkOut)] : []
   );
-  // const [checkIn, setCheckIn] = useState(defaultCheckIn);
-  // const [checkOut, setCheckOut] = useState(defaultCheckOut);
 
   const [locationsList, setLocationsList] = useState([]);
 
@@ -41,17 +39,9 @@ function SearchHotels() {
       });
   }, []);
 
-  // const dispatch = useDispatch();
-  // let { list } = useSelector((state) => state.location);
-  // useEffect(() => {
-  //   dispatch(getLocations());
-  // }, [dispatch]);
-
   const onSelect = (data) => {
     setLocation(data);
   };
-
-  const [form] = Form.useForm();
 
   return (
     <Card title="Search hotels">
@@ -82,11 +72,6 @@ function SearchHotels() {
           format="DD-MM-YYYY"
           placeholder={["Check in", "Check out"]}
           disabledDate={(current) => current < dayjs()}
-          // defaultValue={
-          //   defaultCheckIn && defaultCheckOut
-          //     ? [dayjs(defaultCheckIn), dayjs(defaultCheckOut)]
-          //     : []
-          // }
         />
         <Button
           type="primary"

@@ -4,9 +4,6 @@ import NavbarComponent from "../navbar/navbar";
 import { BookingDetails } from "./booking-details";
 import "./bookRoom.css";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { FamilyDetailsForm } from "./familyDetailsForm";
-import { HotelDetails } from "../hotels/hotel-details";
-import { CheckPrice } from "./checkPrice";
 import { Splitter, SplitterPanel } from "primereact/splitter";
 import {
   Button,
@@ -69,19 +66,19 @@ const CardFlexItem = ({ title, info }) => (
 
 const BookingVerifyDetails = ({ price = {}, handleBookRooms }) => {
   const {
-    availableRooms,
     cgst,
     sgst,
     numberOfDays,
     price: priceBeforeTax,
     totalBookingPrice,
     gstPrice,
+    numberOfRoomsBooked,
   } = price;
 
   return (
     <Card title="Please verify your booking details">
       <CardFlexItem title="Number of Days" info={numberOfDays} />
-      <CardFlexItem title="Number of Rooms" info={availableRooms} />
+      <CardFlexItem title="Number of Rooms" info={numberOfRoomsBooked} />
       <Divider />
       <CardFlexItem title="Price" info={`Rs. ${priceBeforeTax}`} />
       <CardFlexItem title="CGST" info={`${cgst}% ----> Rs. ${gstPrice} `} />
@@ -122,12 +119,16 @@ function BookRoom() {
   const navigate = useNavigate();
 
   const customerId = localStorage.getItem("id");
-
+  let token = localStorage.getItem("token");
   useEffect(() => {
     axios
-      .get(`http://localhost:8083/feelhome/rooms/getByHotel/${hotelId}`)
+      .get(`http://localhost:8083/feelhome/rooms/getByHotel/${hotelId}`, {
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      })
       .then((response) => setHotelData(response.data));
-  }, [hotelId]);
+  }, [hotelId, token]);
 
   useEffect(() => {
     axios
@@ -196,15 +197,7 @@ function BookRoom() {
   };
 
   return (
-    <div
-    // style={{
-    //   backgroundImage: "url(/h5.jpg)",
-    //   backgroundSize: "cover",
-    //   backgroundRepeat: "no-repeat",
-    //   width: "100vw",
-    //   height: "100vh",
-    // }}
-    >
+    <div>
       <div>
         <NavbarComponent />
       </div>

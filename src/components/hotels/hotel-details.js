@@ -3,7 +3,7 @@ import { Collapse, Button, Rate, Modal } from "antd";
 import { RoomDetails } from "./room-details";
 import { Reviews } from "./reviews";
 
-export const HotelDetails = ({ hotel = {} }) => {
+export const HotelDetails = ({ hotel }) => {
   const { name, address, phone_number, email, id } = hotel;
   const items = [
     {
